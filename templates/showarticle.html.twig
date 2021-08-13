@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}  {{singlearticle.title}}!
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<h5>
+			Article
+		</h5>
+
+		<div class="card" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">{{singlearticle.title}}</h5>
+				<p class="card-text">{{singlearticle.body}}</p>
+				<a href="/article" class="card-link">close</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

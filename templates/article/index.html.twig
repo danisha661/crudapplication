@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		{# accessing stuffs from your controller here #}
+		{# <h1>Your Article here: {{username}} </h1> #}
+			<h5>
+		List of Articles
+		</h5>
+			{% if articles %}
+				<table class="table" id="articles">
+
+					<th>
+				Title
+				</th>
+					<th>
+				Content
+				</th>
+				{# looping through an array of articles #}
+					{% for item in articles %}
+						<tr>
+						{# render data #}
+							<td>
+						{{item.title}}
+						</td>
+							<td>
+						{{item.body}}
+						</td>
+							<td><a href="/article/view/{{ item.id }}" class="btn btn-dark"> Show</a>
+						</td>
+
+						</td>
+							<td><a href="/article/update/{{ item.id }}" class="btn btn-warning"> Update </a> </button>
+						</td>
+
+						</td>
+							<td><button class="btn btn-danger delete-article" data-article-id={{item.id}}> Remove </button>
+						</td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		{% else %}
+			<p>
+				Sorry..! no articles found.
+			</p>
+		{% endif %}
+	</div>
+{% endblock %}
