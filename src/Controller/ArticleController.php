@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,28 +12,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+use App\Repository\ArticleRepository;
 
 class ArticleController extends AbstractController
 {
     /**
      * @Route("/article", name="article")
      */
-    public function index(): Response
+    public function index(ArticleRepository $articleRepository): Response
     {
-        // $articles = ['asdfsd', 'gfdhytryy'] ; //dummy data
-        // $entityManager = $this->getDoctrine()->getManager();
-        // $articles = $entityManager->getRepository(Article::class)->findAll();
+        // $articles = $this->getDoctrine()->getRepository(Article::class)->findAll(); //get all data from db
 
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll(); //get all data from db
-
-        // return $this->render('article/index.html.twig', [
-        //     'controller_name' => 'ArticleController',
-        //     'username' => 'testuser' //passing stuffs into the view
-        // ]);
-
-        // dd( $articles);
-
-        // dd($this->render('article/index.html.twig', ['articles' => $articles]) );
+        $articles = $articleRepository->findAll(); //get all data from db
         return $this->render('article/index.html.twig', ['articles' => $articles]);
     }
 
@@ -40,22 +34,10 @@ class ArticleController extends AbstractController
      * Method({"GET", "POST"})
      */
 
-    public function newArticle(Request $request)
+    public function newArticle(Request $request): Response
     {
         $article = new Article();
-        $form = $this->createFormBuilder($article)
-            ->add('title', TextType::class, array(
-                'attr' => array("class" => "form-control"),
-                'required' => false
-            ))
-            ->add('body', TextareaType::class, array(
-                "attr" => array("class" => "form-control"),
-            ))
-            ->add('save', SubmitType::class, array(
-                "label" => "Create",
-                "attr" => array("class" => "btn btn-primary")
-            ))
-            ->getForm();
+        $form = $this->createForm(ArticleType::class, $article);
 
         //get form data
         $form->handleRequest($request);
@@ -88,29 +70,12 @@ class ArticleController extends AbstractController
         $article = new Article();
         //find by id
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-
-        $form = $this->createFormBuilder($article)
-            ->add('title', TextType::class, array(
-                'attr' => array("class" => "form-control"),
-                'required' => false
-            ))
-            ->add('body', TextareaType::class, array(
-                "attr" => array("class" => "form-control"),
-            ))
-            ->add('save', SubmitType::class, array(
-                "label" => "Save Changes",
-                "attr" => array("class" => "btn btn-primary")
-            ))
-            ->getForm();
+        $form = $this->createForm(ArticleType::class, $article);
 
         //get form data
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // $articles = $form->getData();
-            //dd($articles);
             $entityManager = $this->getDoctrine()->getManager();
-            //persist data, getting ready to save
-            // $entityManager->persist($articles);
             //execute
             $entityManager->flush();
             return $this->redirectToRoute("article");
@@ -121,15 +86,15 @@ class ArticleController extends AbstractController
         ]);
     }
 
-
     // view
     /**
      * @Route("/article/view/{id}", name="show-a-single-article")
      * 
      */
-    public function showArticle($id)
+    public function showArticle(ArticleRepository $articleRepository, $id)
     {
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        // $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        $article = $articleRepository->find($id);
         return $this->render('showarticle.html.twig', ['singlearticle' => $article]);
     }
 
@@ -138,10 +103,11 @@ class ArticleController extends AbstractController
      * @Route("/article/delete/{id}", name="delete-article")
      * Method({"DELETE"})
      */
-    public function deleteArticle($id)
+    public function deleteArticle(ArticleRepository $articleRepository, $id)
     {
         //find it by the id
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        // $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        $article = $articleRepository->find($id);
 
         //delete it 
         $entityManager = $this->getDoctrine()->getManager();

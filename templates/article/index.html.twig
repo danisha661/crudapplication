@@ -1,52 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticleController!
+{% block title %}
+	List of Articles
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid">
-		{# accessing stuffs from your controller here #}
-		{# <h1>Your Article here: {{username}} </h1> #}
-			<h5>
+<div class="container-fluid">
+	<h5>
 		List of Articles
-		</h5>
-			{% if articles %}
-				<table class="table" id="articles">
-
-					<th>
+	</h5>
+	{% if articles %}
+		<table class="table" id="articles">
+			<th>
 				Title
-				</th>
-					<th>
+			</th>
+			<th>
 				Content
-				</th>
-				{# looping through an array of articles #}
-					{% for item in articles %}
-						<tr>
-						{# render data #}
-							<td>
+			</th>
+				<th>
+				Firstname
+			</th>
+				<th>
+				Lastname
+			</th>
+				<th>
+				Email
+			</th>
+				<th>
+				Actions
+			</th>
+			{# looping through an array of articles #}
+			{% for item in articles %}
+				<tr>
+					{# render data #}
+					<td>
 						{{item.title}}
-						</td>
-							<td>
+					</td>
+					<td>
 						{{item.body}}
-						</td>
-							<td><a href="/article/view/{{ item.id }}" class="btn btn-dark"> Show</a>
-						</td>
+					</td>
+					<td>
+						{{item.firstname}}
+					</td>
+					<td>
+						{{item.lastname}}
+					</td>
+					<td>
+						{{item.email}}
+					</td>
+					<td>
+						<a href="/article/view/{{ item.id }}" class="btn btn-dark">
+							Show</a>
+					</td>
+				</tr>
+			</td>
+			<td>
+				<a href="/article/update/{{ item.id }}" class="btn btn-warning">
+					Update</a>
+			</td>
+		</button>
+	</td>
 
-						</td>
-							<td><a href="/article/update/{{ item.id }}" class="btn btn-warning"> Update </a> </button>
-						</td>
-
-						</td>
-							<td><button class="btn btn-danger delete-article" data-article-id={{item.id}}> Remove </button>
-						</td>
-					</tr>
-				{% endfor %}
-
-			</table>
-		{% else %}
-			<p>
-				Sorry..! no articles found.
-			</p>
-		{% endif %}
-	</div>
-{% endblock %}
+</td>
+<td>
+	<button class="btn btn-danger delete-article" data-article-id={{item.id}}>
+		Remove
+	</button>
+</td></tr>{% endfor %}</table>{% else %}<p>Sorry..! no articles found.</p>{% endif %}</div>{% endblock %}
