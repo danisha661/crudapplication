@@ -11,8 +11,7 @@ class AddEmailFieldListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            FormEvents::PRE_SET_DATA => 'onPreSetData',
-            // FormEvents::PRE_SUBMIT   => 'onPreSubmit',
+            FormEvents::PRE_SET_DATA => 'onPreSetData'
         ];
     }
 

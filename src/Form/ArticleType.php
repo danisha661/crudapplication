@@ -29,12 +29,15 @@ class ArticleType extends AbstractType
                 "attr" => array("class" => "form-control")
             ))->add('username', TextType::class, array(
                 "attr" => array("class" => "form-control")
+            
             ))->add('email', TextType::class, array(
                 "attr" => array("class" => "form-control")
-            ))->add('save', SubmitType::class, array(
+            ))->addEventSubscriber(new AddEmailFieldListener())
+            
+            ->add('save', SubmitType::class, array(
                 "label" => "Create",
                 "attr" => array("class" => "btn btn-primary")
-            ))->addEventSubscriber(new AddEmailFieldListener());
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

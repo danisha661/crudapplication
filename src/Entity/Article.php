@@ -56,20 +56,10 @@ class Article
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-
-    /**
-     * @Assert\Length(
-     *     min = 5,
-     *     max = 10,
-     *     minMessage = "Ce titre est trop court",
-     *     maxMessage = "Ce titre est trop long"
-     * )
-     * 
-     * @Assert\NotBlank
+     * @ORM\Column(type="text", nullable=true)
      */
     private $title;
+
 
     //Getters & Setters
 
@@ -128,7 +118,7 @@ class Article
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
